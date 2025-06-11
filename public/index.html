@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Gym Class Prediction API Documentation</title>
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+       <style>
+              body {
+                     padding: 2rem 0;
+                     background-color: #f8f9fa;
+              }
+
+              pre {
+                     background-color: #f8f9fa;
+                     padding: 1rem;
+                     border-radius: 4px;
+                     margin: 1rem 0;
+              }
+
+              .method {
+                     color: #0d6efd;
+                     font-weight: bold;
+              }
+
+              .endpoint {
+                     color: #198754;
+                     font-family: monospace;
+              }
+       </style>
+</head>
+
+<body>
+       <div class="container">
+              <h1 class="mb-4">Gym Class Prediction API Documentation</h1>
+
+              <div class="mb-4">
+                     <p>This API provides endpoints for predicting gym class assignments based on physical attributes
+                            and performance metrics. The model classifies users into two classes: 'A' or 'B' based on
+                            their measurements.</p>
+              </div>
+
+              <h2>API Endpoints</h2>
+
+              <div class="card mb-4">
+                     <div class="card-body">
+                            <h3>Base URL</h3>
+                            <p>All API endpoints are relative to: <code>http://localhost:3000</code></p>
+                            <p>For production, replace with your actual domain.</p>
+                     </div>
+              </div>
+
+              <div class="card mb-4">
+                     <div class="card-body">
+                            <h3>1. Make Prediction</h3>
+                            <p><span class="method">POST</span> <span class="endpoint">/predict</span></p>
+
+                            <h4>Example 1: Class A Prediction</h4>
+                            <pre><code class="language-json">{
+    "name": "John Doe",
+    "age": 25,
+    "height_cm": 170,
+    "weight_kg": 70,
+    "situps_count": 20,
+    "broad_jump_cm": 200
+}</code></pre>
+
+                            <h4>Example 2: Class B Prediction</h4>
+                            <pre><code class="language-json">{
+    "name": "Jane Smith",
+    "age": 15,
+    "height_cm": 155,
+    "weight_kg": 45,
+    "situps_count": 10,
+    "broad_jump_cm": 150
+}</code></pre>
+
+                            <h4>Example Response for Class B:</h4>
+                            <pre><code class="language-json">{
+    "success": true,
+    "prediction": {
+        "class": "B",
+        "probability": 0.3245
+    },
+    "record": {
+        "id": "4df9c191-2e15-4420-b5be-af23233465c4",
+        "name": "Jane Smith",
+        "age": 15,
+        "height_cm": 155,
+        "weight_kg": 45,
+        "situps_count": 10,
+        "broad_jump_cm": 150,
+        "predicted_class": "B",
+        "created_at": "2025-06-11T09:25:15.016668+00:00"
+    }
+}</code></pre>
+
+                            <h4>Input Constraints:</h4>
+                            <ul>
+                                   <li>name: Required string</li>
+                                   <li>age: Integer between 10 and 100</li>
+                                   <li>height_cm: Float between 50 and 250</li>
+                                   <li>weight_kg: Float between 3 and 300</li>
+                                   <li>situps_count: Integer between 0 and 200</li>
+                                   <li>broad_jump_cm: Float between 0 and 400</li>
+                            </ul>
+
+                            <h4>Success Response:</h4>
+                            <pre><code class="language-json">{
+    "success": true,
+    "prediction": {
+        "class": "A",
+        "probability": 0.8765
+    },
+    "record": {
+        "id": "3df9c191-2e15-4420-b5be-af23233465c4",
+        "name": "manap",
+        "age": 25,
+        "height_cm": 170,
+        "weight_kg": 70,
+        "situps_count": 20,
+        "broad_jump_cm": 200,
+        "predicted_class": "A",
+        "created_at": "2025-06-11T09:25:15.016668+00:00"
+    }
+}</code></pre>
+
+                            <h4>Error Responses:</h4>
+
+                            <h5>1. Validation Error (400 Bad Request):</h5>
+                            <pre><code class="language-json">{
+    "success": false,
+    "errors": [
+        {
+            "type": "field",
+            "msg": "Age must be between 10 and 100 years",
+            "path": "age",
+            "location": "body"
+        },
+        {
+            "type": "field",
+            "msg": "Height must be between 50 and 250 cm",
+            "path": "height_cm",
+            "location": "body"
+        }
+    ]
+}</code></pre>
+
+                            <h5>2. Missing Required Field (400 Bad Request):</h5>
+                            <pre><code class="language-json">{
+    "success": false,
+    "errors": [
+        {
+            "type": "field",
+            "msg": "Name is required",
+            "path": "name",
+            "location": "body"
+        }
+    ]
+}</code></pre>
+
+                            <h5>3. Invalid Data Type (400 Bad Request):</h5>
+                            <pre><code class="language-json">{
+    "success": false,
+    "errors": [
+        {
+            "type": "field",
+            "msg": "Situps count must be between 0 and 200",
+            "path": "situps_count",
+            "location": "body"
+        }
+    ]
+}</code></pre>
+
+                            <h5>4. Server Error (500 Internal Server Error):</h5>
+                            <pre><code class="language-json">{
+    "success": false,
+    "error": "Error processing prediction"
+}</code></pre>
+
+                            <h5>Common Error Cases:</h5>
+                            <ul>
+                                   <li>Age outside range (10-100 years)</li>
+                                   <li>Height outside range (50-250 cm)</li>
+                                   <li>Weight outside range (3-300 kg)</li>
+                                   <li>Situps count outside range (0-200)</li>
+                                   <li>Broad jump outside range (0-400 cm)</li>
+                                   <li>Missing required fields</li>
+                                   <li>Invalid data types (e.g., string for numeric fields)</li>
+                                   <li>Server/database connection issues</li>
+                            </ul>
+                     </div>
+              </div>
+
+              <div class="card mb-4">
+                     <div class="card-body">
+                            <h3>2. Get Prediction History</h3>
+                            <p><span class="method">GET</span> <span class="endpoint">/predictions</span></p>
+
+                            <h4>Response:</h4>
+                            <pre><code class="language-json">{
+    "success": true,
+    "predictions": [
+        {
+            "id": "uuid",
+            "name": "John Doe",
+            "age": 25,
+            "height_cm": 170,
+            "weight_kg": 70,
+            "situps_count": 20,
+            "broad_jump_cm": 200,
+            "predicted_class": "A",
+            "created_at": "2024-03-11T..."
+        }
+        // ... more predictions
+    ]
+}</code></pre>
+                     </div>
+              </div>
+
+              <div class="card mb-4">
+                     <div class="card-body">
+                            <h3>3. Get Prediction by ID</h3>
+                            <p><span class="method">GET</span> <span class="endpoint">/predictions/:id</span></p>
+
+                            <h4>Parameters:</h4>
+                            <ul>
+                                   <li><code>id</code> (UUID) - The ID of the prediction to retrieve</li>
+                            </ul>
+
+                            <h4>Success Response (200 OK):</h4>
+                            <pre><code class="language-json">{
+    "success": true,
+    "prediction": {
+        "id": "3df9c191-2e15-4420-b5be-af23233465c4",
+        "name": "John Doe",
+        "age": 25,
+        "height_cm": 170,
+        "weight_kg": 70,
+        "situps_count": 20,
+        "broad_jump_cm": 200,
+        "predicted_class": "A",
+        "created_at": "2024-03-11T..."
+    }
+}</code></pre>
+
+                            <h4>Error Response (404 Not Found):</h4>
+                            <pre><code class="language-json">{
+    "success": false,
+    "error": "Prediction not found"
+}</code></pre>
+
+                            <h4>Error Response (500 Internal Server Error):</h4>
+                            <pre><code class="language-json">{
+    "success": false,
+    "error": "Error fetching prediction"
+}</code></pre>
+                     </div>
+              </div>
+
+              <div class="card mb-4">
+                     <div class="card-body">
+                            <h3>Using the API with cURL</h3>
+
+                            <h4>Make a Prediction:</h4>
+                            <pre><code class="language-bash">curl -X POST http://localhost:3000/predict \
+    -H "Content-Type: application/json" \
+    -d '{
+        "name": "John Doe",
+        "age": 25,
+        "height_cm": 170,
+        "weight_kg": 70,
+        "situps_count": 20,
+        "broad_jump_cm": 200
+    }'</code></pre>
+
+                            <h4>Get Prediction History:</h4>
+                            <pre><code class="language-bash">curl http://localhost:3000/predictions</code></pre>
+
+                            <h4>Get Prediction by ID:</h4>
+                            <pre><code class="language-bash">curl http://localhost:3000/predictions/3df9c191-2e15-4420-b5be-af23233465c4</code></pre>
+                     </div>
+              </div>
+
+              <div class="card mb-4">
+                     <div class="card-body">
+                            <h3>Notes</h3>
+                            <ul>
+                                   <li>The API uses TensorFlow.js for model inference</li>
+                                   <li>Predictions are stored in Supabase database</li>
+                                   <li>The model classifies users into two classes: 'A' (probability >= 0.5) or 'B'
+                                          (probability < 0.5)</li>
+                                   <li>All measurements must be within the specified ranges to get a valid prediction
+                                   </li>
+                            </ul>
+                     </div>
+              </div>
+       </div>
+
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+</body>
+
+</html>
