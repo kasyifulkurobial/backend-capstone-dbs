@@ -47,7 +47,7 @@
               <div class="card mb-4">
                      <div class="card-body">
                             <h3>Base URL</h3>
-                            <p>All API endpoints are relative to: <code>http://localhost:3000</code></p>
+                            <p>All API endpoints are relative to: <code>https://backend-capstone-dbs-production.up.railway.app/</code></p>
                             <p>For production, replace with your actual domain.</p>
                      </div>
               </div>
@@ -265,7 +265,7 @@
                             <h3>Using the API with cURL</h3>
 
                             <h4>Make a Prediction:</h4>
-                            <pre><code class="language-bash">curl -X POST http://localhost:3000/predict \
+                            <pre><code class="language-bash">curl -X POST https://backend-capstone-dbs-production.up.railway.app//predict \
     -H "Content-Type: application/json" \
     -d '{
         "name": "John Doe",
@@ -277,10 +277,10 @@
     }'</code></pre>
 
                             <h4>Get Prediction History:</h4>
-                            <pre><code class="language-bash">curl http://localhost:3000/predictions</code></pre>
+                            <pre><code class="language-bash">curl https://backend-capstone-dbs-production.up.railway.app//predictions</code></pre>
 
                             <h4>Get Prediction by ID:</h4>
-                            <pre><code class="language-bash">curl http://localhost:3000/predictions/3df9c191-2e15-4420-b5be-af23233465c4</code></pre>
+                            <pre><code class="language-bash">curl https://backend-capstone-dbs-production.up.railway.app//predictions/3df9c191-2e15-4420-b5be-af23233465c4</code></pre>
                      </div>
               </div>
 
