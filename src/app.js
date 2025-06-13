@@ -75,12 +75,24 @@ app.post('/predict', validatePredictionInput, async (req, res) => {
     // Get prediction
     const prediction = await predict(inputData);
 
+    console.log('Prediction structure:', JSON.stringify(prediction, null, 2));
+
+    // Validate prediction
+    if (!prediction.probability || prediction.probability === null || isNaN(prediction.probability)) {
+      throw new Error('Invalid prediction result: probability is null or invalid');
+    }
+
     // Store prediction in Supabase
     const { data, error } = await supabase
       .from('gym_predictions')
       .insert({
         ...inputData,
-        predicted_class: prediction.probability >= 0.5 ? 'A' : 'B'
+        predicted_class: prediction.class,
+        probability: Number(prediction.probability.toFixed(4)),
+        description: prediction.recommendations.description,
+        exercises: prediction.recommendations.recommendations,
+        nutrition: prediction.recommendations.nutrition,
+        goals: prediction.recommendations.goals
       })
       .select()
       .single();
@@ -90,8 +102,16 @@ app.post('/predict', validatePredictionInput, async (req, res) => {
     res.json({
       success: true,
       prediction: {
-        class: prediction.probability >= 0.5 ? 'A' : 'B',
-        probability: Number(prediction.probability.toFixed(4))
+        class: prediction.class,
+        probability: Number(prediction.probability.toFixed(4)),
+        description: prediction.recommendations.description,
+        confidence: prediction.recommendations.confidence,
+        fitness_score: prediction.recommendations.fitness_score
+      },
+      recommendations: {
+        exercises: prediction.recommendations.recommendations,
+        nutrition: prediction.recommendations.nutrition,
+        goals: prediction.recommendations.goals
       },
       record: data
     });
