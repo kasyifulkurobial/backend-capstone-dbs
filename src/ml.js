@@ -117,13 +117,17 @@ async function predict(data) {
       };
     }
 
-    const predictedClass = probability >= 0.5 ? 'A' : 'B';
+    // Ensure probability is within valid range (0-1)
+    const safeProbability = Math.max(0, Math.min(1, probability));
+    console.log('Safe probability:', safeProbability);
+
+    const predictedClass = safeProbability >= 0.5 ? 'A' : 'B';
 
     // Generate recommendations based on class
-    const recommendations = getRecommendations(predictedClass, data, probability);
+    const recommendations = getRecommendations(predictedClass, data, safeProbability);
 
     return {
-      probability: probability,
+      probability: safeProbability,
       class: predictedClass,
       recommendations: recommendations
     };

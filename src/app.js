@@ -82,13 +82,16 @@ app.post('/predict', validatePredictionInput, async (req, res) => {
       throw new Error('Invalid prediction result: probability is null or invalid');
     }
 
+    // Ensure probability doesn't exceed database constraint (max 0.9999 for numeric(4,4))
+    const safeProbability = Math.min(0.9999, Math.max(0.0001, prediction.probability));
+
     // Store prediction in Supabase
     const { data, error } = await supabase
       .from('gym_predictions')
       .insert({
         ...inputData,
         predicted_class: prediction.class,
-        probability: Number(prediction.probability.toFixed(4)),
+        probability: Number(safeProbability.toFixed(4)),
         description: prediction.recommendations.description,
         exercises: prediction.recommendations.recommendations,
         nutrition: prediction.recommendations.nutrition,
@@ -103,7 +106,7 @@ app.post('/predict', validatePredictionInput, async (req, res) => {
       success: true,
       prediction: {
         class: prediction.class,
-        probability: Number(prediction.probability.toFixed(4)),
+        probability: Number(safeProbability.toFixed(4)),
         description: prediction.recommendations.description,
         confidence: prediction.recommendations.confidence,
         fitness_score: prediction.recommendations.fitness_score

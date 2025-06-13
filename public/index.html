@@ -298,6 +298,12 @@
     "error": "Invalid prediction result: probability is null or invalid"
 }</code></pre>
 
+                <h5>6. Database Constraint Error (500 Internal Server Error):</h5>
+                <pre><code class="language-json">{
+    "success": false,
+    "error": "Error processing prediction"
+}</code></pre>
+
                 <h5>Common Error Cases:</h5>
                 <ul>
                     <li>Age outside range (10-100 years)</li>
@@ -310,6 +316,8 @@
                     <li>Server/database connection issues</li>
                     <li>ML model loading or prediction failures</li>
                     <li>Invalid probability values from model</li>
+                    <li>Database constraint violations (e.g., probability overflow)</li>
+                    <li>Model prediction values outside expected ranges</li>
                 </ul>
             </div>
         </div>
@@ -431,6 +439,8 @@
                     <li>Fallback mechanism ensures predictions work even if the ML model fails</li>
                     <li>Input validation prevents invalid data from being processed</li>
                     <li>All database fields are properly validated before insertion</li>
+                    <li>Probability values are automatically capped at 0.9999 to comply with database constraints</li>
+                    <li>Model predictions are validated and sanitized before storage</li>
                 </ul>
             </div>
         </div>
