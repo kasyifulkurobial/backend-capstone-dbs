@@ -206,19 +206,19 @@ function generateDescription(predictedClass, probability, fitnessScore) {
 
   if (predictedClass === 'A') {
     if (confidence === 'High') {
-      return `Berdasarkan analisis data Anda, Anda memiliki tingkat kebugaran yang sangat baik (skor: ${fitnessScore}/100). Model kami yakin dengan tingkat kepercayaan tinggi bahwa Anda siap untuk program latihan tingkat lanjut.`;
+      return `Berdasarkan analisis data Anda, Anda memiliki tingkat kebugaran yang sangat baik (skor: ${fitnessScore} dari 1). Model kami yakin dengan tingkat kepercayaan tinggi bahwa Anda siap untuk program latihan tingkat lanjut.`;
     } else if (confidence === 'Medium') {
-      return `Analisis menunjukkan Anda memiliki potensi untuk program latihan tingkat lanjut (skor: ${fitnessScore}/100), namun disarankan untuk memulai dengan intensitas sedang dan meningkat secara bertahap.`;
+      return `Analisis menunjukkan Anda memiliki potensi untuk program latihan tingkat lanjut (skor: ${fitnessScore} dari 1), namun disarankan untuk memulai dengan intensitas sedang dan meningkat secara bertahap.`;
     } else {
-      return `Hasil analisis menunjukkan Anda berada di batas antara tingkat pemula dan lanjutan (skor: ${fitnessScore}/100). Disarankan untuk konsultasi dengan trainer untuk program yang tepat.`;
+      return `Hasil analisis menunjukkan Anda berada di batas antara tingkat pemula dan lanjutan (skor: ${fitnessScore} dari 1). Disarankan untuk konsultasi dengan trainer untuk program yang tepat.`;
     }
   } else {
     if (confidence === 'High') {
-      return `Berdasarkan analisis data Anda, Anda berada di tahap awal perjalanan fitness (skor: ${fitnessScore}/100). Model kami merekomendasikan program latihan dasar yang fokus pada membangun fondasi yang kuat.`;
+      return `Berdasarkan analisis data Anda, Anda berada di tahap awal perjalanan fitness (skor: ${fitnessScore} dari 1). Model kami merekomendasikan program latihan dasar yang fokus pada membangun fondasi yang kuat.`;
     } else if (confidence === 'Medium') {
-      return `Analisis menunjukkan Anda memiliki potensi untuk berkembang (skor: ${fitnessScore}/100). Mulailah dengan program latihan dasar dan tingkatkan intensitas secara bertahap.`;
+      return `Analisis menunjukkan Anda memiliki potensi untuk berkembang (skor: ${fitnessScore} dari 1). Mulailah dengan program latihan dasar dan tingkatkan intensitas secara bertahap.`;
     } else {
-      return `Hasil analisis menunjukkan Anda berada di batas antara tingkat pemula dan lanjutan (skor: ${fitnessScore}/100). Disarankan untuk konsultasi dengan trainer untuk program yang tepat.`;
+      return `Hasil analisis menunjukkan Anda berada di batas antara tingkat pemula dan lanjutan (skor: ${fitnessScore} dari 1). Disarankan untuk konsultasi dengan trainer untuk program yang tepat.`;
     }
   }
 }
